@@ -60,7 +60,7 @@ class Image_Stitching():
         result = np.concatenate((panorama1[: , 0: panorama1.shape[1] // 2 ], panorama2[:, panorama2.shape[1] // 2 : panorama2.shape[1]]), axis=1)
         # asd = panorama2[:, panorama2.shape[1] // 2 : panorama2.shape[1]]
         # cv2.imwrite("x1.jpg", asd)
-        ImageBlender(result[: , 0: panorama1.shape[1] // 2 ], result[:, panorama2.shape[1] // 2 : panorama2.shape[1]], 3, 1.5, 9)
+        ImageBlender(result[: , 0: panorama1.shape[1] // 2 ], result[:, panorama2.shape[1] // 2 : panorama2.shape[1]], 5, 1.5, 9)
 
 def main(argv1,argv2):
     img1 = cv2.imread(argv1)
@@ -68,5 +68,5 @@ def main(argv1,argv2):
     Image_Stitching().blending(img1,img2)
     
 if __name__ == '__main__':
-  main(r"C:\Users\MONSTER\GitHub\PanoromaImageCreator\src\im1.jpg", r"C:\Users\MONSTER\GitHub\PanoromaImageCreator\src\im2.jpg")
+  main(r"C:\Users\MONSTER\GitHub\PanoramaImageCreator\src\1.jpg", r"C:\Users\MONSTER\GitHub\PanoramaImageCreator\src\2.jpg")
     
