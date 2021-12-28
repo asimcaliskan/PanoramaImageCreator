@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import sys
+from ImageBlender import ImageBlender
 
 class Image_Stitching():
     def __init__(self) :
@@ -54,25 +55,18 @@ class Image_Stitching():
         width_panorama = width_img1 +width_img2
 
         panorama1 = np.zeros((height_panorama, width_panorama, 3))
-        mask1 = self.create_mask(img1,img2,version='left_image')
         panorama1[0:img1.shape[0], 0:img1.shape[1], :] = img1
-        panorama1 *= mask1
-        mask2 = self.create_mask(img1,img2,version='right_image')
-        panorama2 = cv2.warpPerspective(img2, H, (width_panorama, height_panorama))*mask2
-        result=panorama1+panorama2
-
-        rows, cols = np.where(result[:, :, 0] != 0)
-        min_row, max_row = min(rows), max(rows) + 1
-        min_col, max_col = min(cols), max(cols) + 1
-        final_result = result[min_row:max_row, min_col:max_col, :]
-        return final_result
+        panorama2 = cv2.warpPerspective(img2, H, (width_panorama, height_panorama))
+        result = np.concatenate((panorama1[: , 0: panorama1.shape[1] // 2 ], panorama2[:, panorama2.shape[1] // 2 : panorama2.shape[1]]), axis=1)
+        # asd = panorama2[:, panorama2.shape[1] // 2 : panorama2.shape[1]]
+        # cv2.imwrite("x1.jpg", asd)
+        ImageBlender(result[: , 0: panorama1.shape[1] // 2 ], result[:, panorama2.shape[1] // 2 : panorama2.shape[1]], 3, 1.5, 9)
 
 def main(argv1,argv2):
     img1 = cv2.imread(argv1)
     img2 = cv2.imread(argv2)
-    final=Image_Stitching().blending(img1,img2)
-    cv2.imwrite('panorama.jpg', final)
+    Image_Stitching().blending(img1,img2)
     
 if __name__ == '__main__':
-  main(r"C:\Users\MONSTER\GitHub\PanoromeImageCreator\src\im1.jpg", r"C:\Users\MONSTER\GitHub\PanoromeImageCreator\src\im2.jpg")
+  main(r"C:\Users\MONSTER\GitHub\PanoromaImageCreator\src\im1.jpg", r"C:\Users\MONSTER\GitHub\PanoromaImageCreator\src\im2.jpg")
     
