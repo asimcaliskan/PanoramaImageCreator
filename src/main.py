@@ -4,7 +4,7 @@ import cv2
 image_left = cv2.imread(r"C:\Users\MONSTER\GitHub\PanoramaImageCreator\src\apple.png")
 image_right = cv2.imread(r"C:\Users\MONSTER\GitHub\PanoramaImageCreator\src\orange.png")
 
-image_blender = ImageBlender(image_left, image_right, 5, 1, 15)
+image_blender = ImageBlender(image_left, image_right, 5, 1.5, 7)
 
 # left_upsamples = image_pyramid_left.get_upsampled_images()
 # left_laplacian = image_pyramid_left.get_laplacian_pyramid()

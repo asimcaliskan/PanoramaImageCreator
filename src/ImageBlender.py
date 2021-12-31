@@ -15,6 +15,7 @@ class ImageBlender:
       self.right_lapcalican_pyramid = []
       self.combined_laplacian_pyramid = []
       self.blended_images = []
+      self.blend()
 
   def apply_gauss(self, image):
     # image_height, image_width, image_channel = image.shape
@@ -93,7 +94,10 @@ class ImageBlender:
 
     #create combined laplacian pyramid
     for img in range(len(self.right_lapcalican_pyramid)):
-      self.combined_laplacian_pyramid.append(np.concatenate((self.left_laplacian_pyramid[img], self.right_lapcalican_pyramid[img]), axis=1))  
+      self.combined_laplacian_pyramid.append(np.concatenate((self.left_laplacian_pyramid[img], self.right_lapcalican_pyramid[img]), axis=1))
+
+    self.write_list(self.right_lapcalican_pyramid)
+  
 
     #blend
     for img in range(len(self.left_upsampled_images) - 1, -1, -1):
@@ -104,9 +108,8 @@ class ImageBlender:
         self.blended_images.append(self.apply_upsampling(np.add(self.blended_images[-1], self.combined_laplacian_pyramid[img]), self.combined_laplacian_pyramid[img - 1].shape))
       else:
         self.blended_images.append(np.add(self.blended_images[-1], self.combined_laplacian_pyramid[img]))
-    #self.write_list(self.blended_images)
-    result = self.blended_images[-1].astype(np.uint8)
-    return result
+    self.write_list(self.combined_laplacian_pyramid)
+    cv2.imwrite("panorama.jpg", self.blended_images[-1])
 
   
   def write_list(self, image_list):
